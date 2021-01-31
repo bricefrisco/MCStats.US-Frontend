@@ -1,0 +1,8 @@
+/* .tooltip {
+  padding-top: 2px;
+} */
+
+.apexcharts-tooltip {
+  padding-left: 8px;
+  padding-right: 8px;
+}
