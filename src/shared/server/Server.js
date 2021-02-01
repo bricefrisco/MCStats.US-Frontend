@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import { Col } from 'react-bootstrap';
 
 import { parseResponse } from '../../utils';
 import { Chart } from '../../shared/chart';
@@ -10,15 +9,22 @@ import './server.css';
 export const Server = ({ server }) => {
   const [timeseries, setTimeseries] = useState([]);
   const [error, setError] = useState(false);
-  const [startDate, setStartDate] = useState(
-    moment().subtract(1, 'hours').format()
-  );
-  const [endDate, setEndDate] = useState(moment().format());
   const [selectedTimespan, setSelectedTimespan] = useState('1h');
+  const [intervalPointer, setIntervalPointer] = useState();
 
-  useEffect(() => {
+  const getTimespan = (timespan) => {
+    if (timespan === '1h') return moment().subtract(1, 'hours').format();
+    if (timespan === '1d') return moment().subtract(24, 'hours').format();
+    if (timespan === '1w') return moment().subtract(1, 'week').format();
+    if (timespan === '1m') return moment().subtract(1, 'months').format();
+    if (timespan === '2m') return moment().subtract(2, 'months').format();
+  };
+
+  const fetchTimeseries = () => {
     fetch(
-      `${process.env.REACT_APP_BACKEND}/timeseries?serverName=${server.name}&lt=${endDate}&gt=${startDate}`
+      `${process.env.REACT_APP_BACKEND}/timeseries?serverName=${
+        server.name
+      }&lt=${moment().format()}&gt=${getTimespan(selectedTimespan)}`
     )
       .then(parseResponse)
       .then((response) => {
@@ -39,41 +45,24 @@ export const Server = ({ server }) => {
           setError(err.toString());
         }
       });
-  }, [startDate, endDate]);
-
-  const setTimespan = (timespan) => {
-    setSelectedTimespan(timespan);
-
-    if (timespan === '1h') {
-      const selectedStartDate = moment().subtract(1, 'hours').format();
-      setStartDate(selectedStartDate);
-      return;
-    }
-
-    if (timespan === '1d') {
-      const selectedStartDate = moment().subtract(24, 'hours').format();
-      setStartDate(selectedStartDate);
-      return;
-    }
-
-    if (timespan === '1w') {
-      const selectedStartDate = moment().subtract(1, 'week').format();
-      setStartDate(selectedStartDate);
-      return;
-    }
-
-    if (timespan === '1m') {
-      const selectedStartDate = moment().subtract(1, 'months').format();
-      setStartDate(selectedStartDate);
-      return;
-    }
-
-    if (timespan === '2m') {
-      const selectedStartDate = moment().subtract(2, 'months').format();
-      setStartDate(selectedStartDate);
-      return;
-    }
   };
+
+  useEffect(() => {
+    fetchTimeseries();
+
+    if (intervalPointer !== null && intervalPointer !== undefined) {
+      clearInterval(intervalPointer);
+    }
+
+    setIntervalPointer(setInterval(fetchTimeseries, 60 * 1000));
+  }, [selectedTimespan, server.name]);
+
+  useEffect(() => {
+    return () => {
+      if (intervalPointer === null || intervalPointer === undefined) return;
+      clearInterval(intervalPointer);
+    };
+  }, []);
 
   return (
     <div className="server">
@@ -107,7 +96,7 @@ export const Server = ({ server }) => {
                 ? 'timespan-selection selected'
                 : 'timespan-selection'
             }
-            onClick={() => setTimespan('1h')}
+            onClick={() => setSelectedTimespan('1h')}
           >
             1H
           </span>
@@ -118,7 +107,7 @@ export const Server = ({ server }) => {
                 ? 'timespan-selection selected'
                 : 'timespan-selection'
             }
-            onClick={() => setTimespan('1d')}
+            onClick={() => setSelectedTimespan('1d')}
           >
             1D
           </span>
@@ -129,7 +118,7 @@ export const Server = ({ server }) => {
                 ? 'timespan-selection selected'
                 : 'timespan-selection'
             }
-            onClick={() => setTimespan('1w')}
+            onClick={() => setSelectedTimespan('1w')}
           >
             1W
           </span>
@@ -140,7 +129,7 @@ export const Server = ({ server }) => {
                 ? 'timespan-selection selected'
                 : 'timespan-selection'
             }
-            onClick={() => setTimespan('1m')}
+            onClick={() => setSelectedTimespan('1m')}
           >
             1M
           </span>
@@ -151,7 +140,7 @@ export const Server = ({ server }) => {
                 ? 'timespan-selection selected'
                 : 'timespan-selection'
             }
-            onClick={() => setTimespan('2m')}
+            onClick={() => setSelectedTimespan('2m')}
           >
             2M
           </span>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
 
@@ -25,10 +25,6 @@ export const Chart = ({ data, height, width }) => {
 
     dataLabels: {
       enabled: false,
-    },
-
-    markers: {
-      size: 0,
     },
 
     fill: {

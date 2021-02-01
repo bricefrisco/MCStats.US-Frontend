@@ -4,9 +4,6 @@ import ReactPaginate from 'react-paginate';
 import { parseResponse } from '../../utils/api';
 import { Server } from '../../shared/server';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine } from '@fortawesome/free-solid-svg-icons';
-
 import Header from './Header';
 
 import './servers.css';

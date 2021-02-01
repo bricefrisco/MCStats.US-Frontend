@@ -1,8 +1,3 @@
-#servers {
-  padding-top: 25px;
-  min-height: calc(100vh - 226px);
-}
-
 .server {
   display: flex;
   min-width: 700px;

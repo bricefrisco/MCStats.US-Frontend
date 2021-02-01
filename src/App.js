@@ -6,7 +6,6 @@ import AdminNavigation from './admin/AdminNavbar';
 import AdminPanel from './admin/AdminPanel';
 
 import { Servers } from './server-list/servers';
-import { Navigation } from './shared/navbar';
 
 const App = () => {
   return (
@@ -23,7 +22,6 @@ const App = () => {
         </Route>
 
         <Route exact path="/">
-          <Navigation />
           <Servers />
         </Route>
       </Switch>
