@@ -14,17 +14,7 @@
 
 .pagination > ul > li > a {
   padding: 5px 10px;
-  border: 1px solid lightgray;
   display: flex;
-}
-
-.pagination > ul > li {
-  color: #007bff;
-}
-
-.pagination > ul > li.selected {
-  background-color: #007bff;
-  color: #fff;
 }
 
 .pagination > ul > li:first-of-type {
@@ -33,6 +23,20 @@
 
 .pagination > ul > li:last-of-type {
   margin-left: 5px;
+}
+
+.mcstats-header {
+  padding-left: 15px;
+}
+
+.mcstats-heading {
+  margin-left: 10px;
+  font-size: 48px;
+}
+
+.mcstats-subheading {
+  font-size: 21px;
+  font-weight: 300;
 }
 
 @media (max-width: 1500px) {

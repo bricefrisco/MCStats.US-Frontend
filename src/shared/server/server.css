@@ -1,6 +1,12 @@
+#servers {
+  padding-top: 25px;
+  min-height: calc(100vh - 226px);
+}
+
 .server {
   display: flex;
   min-width: 700px;
+  align-items: space-around;
 }
 
 .server-info {
@@ -17,15 +23,8 @@
 
 .timespan-selection {
   font-size: 0.8em;
-  color: #007bff;
-  border: 1px solid lightgray;
   padding: 0px 8px;
   border-radius: 20%;
-}
-
-.timespan-selection.selected {
-  background-color: #007bff;
-  color: white;
 }
 
 .timespan-selection:hover {

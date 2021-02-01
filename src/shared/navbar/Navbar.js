@@ -35,7 +35,7 @@ export const Navigation = () => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <FontAwesomeIcon icon={faGithub} size="2x" />
+          <FontAwesomeIcon icon={faGithub} size="2x" color="#9882ac" />
         </a>
       </Navbar.Collapse>
     </Navbar>

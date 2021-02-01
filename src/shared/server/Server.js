@@ -7,7 +7,7 @@ import { Chart } from '../../shared/chart';
 
 import './server.css';
 
-export const Server = ({ server, showSeries = true }) => {
+export const Server = ({ server }) => {
   const [timeseries, setTimeseries] = useState([]);
   const [error, setError] = useState(false);
   const [startDate, setStartDate] = useState(
@@ -17,10 +17,6 @@ export const Server = ({ server, showSeries = true }) => {
   const [selectedTimespan, setSelectedTimespan] = useState('1h');
 
   useEffect(() => {
-    if (!showSeries) {
-      return;
-    }
-
     fetch(
       `${process.env.REACT_APP_BACKEND}/timeseries?serverName=${server.name}&lt=${endDate}&gt=${startDate}`
     )
@@ -46,20 +42,37 @@ export const Server = ({ server, showSeries = true }) => {
   }, [startDate, endDate]);
 
   const setTimespan = (timespan) => {
+    setSelectedTimespan(timespan);
+
     if (timespan === '1h') {
-      setStartDate(moment().subtract(1, 'hours').format());
-    } else if (timespan === '1d') {
-      const t = moment().subtract(24, 'hours').format();
-      setStartDate(t);
-    } else if (timespan === '1w') {
-      setStartDate(moment().substract(1, 'weeks').format());
-    } else if (timespan === '1m') {
-      setStartDate(moment().substract(1, 'months').format());
-    } else if (timespan === '2m') {
-      setStartDate(moment().substract(2, 'months').format());
+      const selectedStartDate = moment().subtract(1, 'hours').format();
+      setStartDate(selectedStartDate);
+      return;
     }
 
-    setSelectedTimespan(timespan);
+    if (timespan === '1d') {
+      const selectedStartDate = moment().subtract(24, 'hours').format();
+      setStartDate(selectedStartDate);
+      return;
+    }
+
+    if (timespan === '1w') {
+      const selectedStartDate = moment().subtract(1, 'week').format();
+      setStartDate(selectedStartDate);
+      return;
+    }
+
+    if (timespan === '1m') {
+      const selectedStartDate = moment().subtract(1, 'months').format();
+      setStartDate(selectedStartDate);
+      return;
+    }
+
+    if (timespan === '2m') {
+      const selectedStartDate = moment().subtract(2, 'months').format();
+      setStartDate(selectedStartDate);
+      return;
+    }
   };
 
   return (
@@ -68,11 +81,14 @@ export const Server = ({ server, showSeries = true }) => {
         <div className="d-flex">
           <img
             src={server.image}
-            alt={`${server.name} FavIcon`}
+            alt={`${server.name} favicon`}
             style={{ width: '64px', height: '64px' }}
           />
           <div className="ml-2">
-            <h3 style={{ fontSize: '1.17em' }} className="mt-0 mb-0">
+            <h3
+              style={{ fontSize: '1.17em' }}
+              className="mt-0 mb-0 server-name"
+            >
               {server.name}
             </h3>
             <h3 style={{ fontSize: '1.0em' }} className="mt-1 mb-1">
@@ -95,6 +111,7 @@ export const Server = ({ server, showSeries = true }) => {
           >
             1H
           </span>
+
           <span
             className={
               selectedTimespan === '1d'
@@ -105,6 +122,7 @@ export const Server = ({ server, showSeries = true }) => {
           >
             1D
           </span>
+
           <span
             className={
               selectedTimespan === '1w'
@@ -115,6 +133,7 @@ export const Server = ({ server, showSeries = true }) => {
           >
             1W
           </span>
+
           <span
             className={
               selectedTimespan === '1m'
@@ -125,6 +144,7 @@ export const Server = ({ server, showSeries = true }) => {
           >
             1M
           </span>
+
           <span
             className={
               selectedTimespan === '2m'
@@ -138,8 +158,10 @@ export const Server = ({ server, showSeries = true }) => {
         </div>
       </div>
 
-      {timeseries.length > 0 && showSeries && (
+      {timeseries.length > 0 ? (
         <Chart data={timeseries} height={150} width={500} />
+      ) : (
+        <div style={{ width: `500px`, height: '150px' }} />
       )}
     </div>
   );

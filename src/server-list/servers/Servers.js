@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 
 import { parseResponse } from '../../utils/api';
-import { Server } from '../server';
+import { Server } from '../../shared/server';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons';
+
+import Header from './Header';
 
 import './servers.css';
 
@@ -13,7 +18,7 @@ export const Servers = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND}/servers?page=${page}`)
+    fetch(`${process.env.REACT_APP_BACKEND}/servers?page=${page}&pageSize=6`)
       .then(parseResponse)
       .then((response) => {
         setPage(response.number);
@@ -31,6 +36,8 @@ export const Servers = () => {
 
   return (
     <>
+      <Header />
+
       <div className="container d-flex justify-content-center mt-5">
         <div className="pagination">
           <ReactPaginate
@@ -40,6 +47,7 @@ export const Servers = () => {
           />
         </div>
       </div>
+
       <div id="servers">
         {servers.map((server) => (
           <Server server={server} key={server.name} />
