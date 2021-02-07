@@ -9,6 +9,7 @@ import { parseResponse } from '../../utils/api';
 import { ServerInfo } from '../../shared/server-info';
 import { Select } from '../../shared/select';
 import { AddServer } from '../../shared/add-server';
+import { RemoveServer } from '../../shared/remove-server';
 
 import './servers.css';
 
@@ -90,6 +91,11 @@ export const Servers = () => {
             <AddServer
               show={showAddServerModal}
               setShow={() => setShowAddServerModal(!showAddServerModal)}
+            />
+
+            <RemoveServer
+              show={showRemoveServerModal}
+              setShow={() => setShowRemoveServerModal(!showRemoveServerModal)}
             />
           </div>
         )}

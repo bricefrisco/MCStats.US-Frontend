@@ -85,4 +85,40 @@ export const login = (email, password) => (dispatch) => {
     });
 };
 
+export const refresh = (callback) => (dispatch, getState) => {
+  dispatch(loading());
+  const jwt = getState().auth.jwt;
+  const refreshToken = getState().auth.refreshToken;
+  const email = getState().auth.email;
+
+  fetch(`${process.env.REACT_APP_BACKEND}/refresh`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + jwt,
+    },
+    body: JSON.stringify({ jwt: 'Bearer ' + jwt, refreshToken }),
+  })
+    .then(parseResponse)
+    .then((response) => {
+      dispatch(
+        loaded({
+          email,
+          jwt: response.jwt,
+          refreshToken: response.refreshToken,
+        })
+      );
+    })
+    .then(() => callback())
+    .catch((err) => {
+      dispatch(
+        errored(
+          err === undefined || err == null
+            ? 'Unknown error occurred'
+            : err.toString()
+        )
+      );
+    });
+};
+
 export default authSlice.reducer;
