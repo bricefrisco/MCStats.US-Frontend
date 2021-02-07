@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import Login from './admin/Login';
 import AdminNavigation from './admin/AdminNavbar';
@@ -23,6 +23,10 @@ const App = () => {
 
         <Route exact path="/">
           <Servers />
+        </Route>
+
+        <Route path="/">
+          <Redirect to="/" />
         </Route>
       </Switch>
     </BrowserRouter>

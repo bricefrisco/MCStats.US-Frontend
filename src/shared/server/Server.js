@@ -50,19 +50,11 @@ export const Server = ({ server }) => {
   useEffect(() => {
     fetchTimeseries();
 
-    if (intervalPointer !== null && intervalPointer !== undefined) {
-      clearInterval(intervalPointer);
-    }
+    const pointer = setInterval(fetchTimeseries, 60 * 1000);
+    setIntervalPointer(pointer);
 
-    setIntervalPointer(setInterval(fetchTimeseries, 60 * 1000));
+    return () => clearInterval(intervalPointer);
   }, [selectedTimespan, server.name]);
-
-  useEffect(() => {
-    return () => {
-      if (intervalPointer === null || intervalPointer === undefined) return;
-      clearInterval(intervalPointer);
-    };
-  }, []);
 
   return (
     <div className="server">
