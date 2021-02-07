@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 
 import { parseResponse } from '../../utils/api';
-import { Server } from '../../shared/server';
+import { Server } from '../../shared/server-info';
 
 import Header from './Header';
 

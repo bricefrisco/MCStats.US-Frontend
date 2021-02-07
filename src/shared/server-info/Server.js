@@ -2,9 +2,39 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
 import { parseResponse } from '../../utils';
-import { Chart } from '../../shared/chart';
+import { Chart } from '../chart';
 
 import './server.css';
+
+const getTimespan = (timespan) => {
+  if (timespan === '1h') return moment().subtract(1, 'hours').format();
+  if (timespan === '1d') return moment().subtract(24, 'hours').format();
+  if (timespan === '1w') return moment().subtract(1, 'week').format();
+  if (timespan === '1m') return moment().subtract(1, 'months').format();
+  if (timespan === '2m') return moment().subtract(2, 'months').format();
+};
+
+const formatTimeseries = (timeseries) => [
+  {
+    name: 'Players',
+    data: timeseries.map((res) => ({
+      x: new Date(res.date),
+      y: res.playersOnline,
+    })),
+  },
+];
+
+const fetchTimeseries = (serverName, selectedTimespan) => {
+  return fetch(
+    `${
+      process.env.REACT_APP_BACKEND
+    }/timeseries?serverName=${serverName}&lt=${moment().format()}&gt=${getTimespan(
+      selectedTimespan
+    )}`
+  )
+    .then(parseResponse)
+    .then(formatTimeseries);
+};
 
 export const Server = ({ server }) => {
   const [timeseries, setTimeseries] = useState([]);
@@ -12,32 +42,9 @@ export const Server = ({ server }) => {
   const [selectedTimespan, setSelectedTimespan] = useState('1h');
   const [intervalPointer, setIntervalPointer] = useState();
 
-  const getTimespan = (timespan) => {
-    if (timespan === '1h') return moment().subtract(1, 'hours').format();
-    if (timespan === '1d') return moment().subtract(24, 'hours').format();
-    if (timespan === '1w') return moment().subtract(1, 'week').format();
-    if (timespan === '1m') return moment().subtract(1, 'months').format();
-    if (timespan === '2m') return moment().subtract(2, 'months').format();
-  };
-
-  const fetchTimeseries = () => {
-    fetch(
-      `${process.env.REACT_APP_BACKEND}/timeseries?serverName=${
-        server.name
-      }&lt=${moment().format()}&gt=${getTimespan(selectedTimespan)}`
-    )
-      .then(parseResponse)
-      .then((response) => {
-        setTimeseries([
-          {
-            name: 'Players',
-            data: response.map((res) => ({
-              x: new Date(res.date),
-              y: res.playersOnline,
-            })),
-          },
-        ]);
-      })
+  const getTimeseries = () => {
+    fetchTimeseries(server.name, selectedTimespan)
+      .then((response) => setTimeseries(response))
       .catch((err) => {
         if (err === null || err === undefined) {
           setError('Unknown error occurred');
@@ -48,11 +55,8 @@ export const Server = ({ server }) => {
   };
 
   useEffect(() => {
-    fetchTimeseries();
-
-    const pointer = setInterval(fetchTimeseries, 60 * 1000);
-    setIntervalPointer(pointer);
-
+    getTimeseries();
+    setIntervalPointer(setInterval(getTimeseries, 60 * 1000));
     return () => clearInterval(intervalPointer);
   }, [selectedTimespan, server.name]);
 

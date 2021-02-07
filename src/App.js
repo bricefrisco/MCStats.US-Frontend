@@ -21,6 +21,10 @@ const App = () => {
           <Login />
         </Route>
 
+        <Route exact path="/:ip">
+          <div></div>
+        </Route>
+
         <Route exact path="/">
           <Servers />
         </Route>
