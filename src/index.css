@@ -88,3 +88,34 @@ nav > * {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.form-group > input {
+  background-color: #1c1b1c;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary {
+  background-color: rgb(152, 130, 172) !important;
+  border: 1px solid rgb(152, 130, 172) !important;
+}
+
+.btn-primary:hover {
+  background-color: rgba(152, 130, 172, 0.7) !important;
+}
+
+.modal-content {
+  background-color: #1c1b1c !important;
+  color: #fff !important;
+}
+
+button.close > span {
+  color: #fff;
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+}

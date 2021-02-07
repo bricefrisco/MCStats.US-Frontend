@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { parseResponse } from '../utils/api';
 import { ServerChart } from '../shared/server-info';
+import { Select } from '../shared/select';
 
 const numberWithCommas = (num) => {
   return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -34,11 +35,34 @@ const Metadata = ({
   );
 };
 
+const options = [
+  {
+    value: '1h',
+    label: 'Last hour',
+  },
+  {
+    value: '1d',
+    label: 'Last day',
+  },
+  {
+    value: '1w',
+    label: 'Last week',
+  },
+  {
+    value: '1m',
+    label: 'Last month',
+  },
+  {
+    value: '2m',
+    label: 'Last two months',
+  },
+];
+
 export const Server = () => {
   const { serverName } = useParams();
   const [server, setServer] = useState();
   const [error, setError] = useState();
-  const [timespan, setTimespan] = useState('1h');
+  const [timespan, setTimespan] = useState(options[0]);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_BACKEND}/server?name=${serverName}`)
@@ -58,18 +82,25 @@ export const Server = () => {
   return (
     <section id="server" className="pl-4 pt-5 pb-4">
       <Metadata
+        className="d-flex ml-4"
         icon={server.image}
         name={server.name}
         ip={server.address}
         playerCount={server.players}
         height="100px"
         width="100px"
-        className="d-flex ml-4"
+      />
+
+      <Select
+        value={timespan}
+        values={options}
+        className="ml-4"
+        onChange={setTimespan}
       />
 
       <ServerChart
         serverName={server.name}
-        selectedTimespan={timespan}
+        selectedTimespan={timespan.value}
         height={500}
         width="100%"
       />

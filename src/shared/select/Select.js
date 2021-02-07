@@ -7,7 +7,6 @@ const formatOptions = (options) =>
   options.map((option) => ({ value: option, label: option }));
 
 const styles = {
-  control: (styles) => ({ ...styles, backgroundColor: 'white' }),
   option: (styles, { isFocused }) => {
     return {
       ...styles,
@@ -63,12 +62,15 @@ export const Select = ({
   placeholder,
   isClearable,
   onChange,
+  values,
+  value,
 }) => {
   const [loading, setLoading] = useState(true);
   const [options, setOptions] = useState();
   const [error, setError] = useState();
 
   useEffect(() => {
+    if (values) return;
     fetch(`${process.env.REACT_APP_BACKEND}/server-names`)
       .then(parseResponse)
       .then(formatOptions)
@@ -85,7 +87,8 @@ export const Select = ({
   return (
     <div style={{ width }} className={className}>
       <ReactSelect
-        options={options}
+        value={value}
+        options={values ? values : options}
         isSearchable={isSearchable}
         styles={styles}
         placeholder={placeholder}

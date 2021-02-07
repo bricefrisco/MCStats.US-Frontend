@@ -2,8 +2,6 @@ import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import Login from './admin/Login';
-import AdminNavigation from './admin/AdminNavbar';
-import AdminPanel from './admin/AdminPanel';
 
 import { Server } from './server';
 import { Servers } from './server-list/servers';
@@ -13,13 +11,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/admin/panel">
-          <AdminNavigation />
-          <AdminPanel />
-        </Route>
-
         <Route exact path="/admin">
-          <AdminNavigation />
+          <Header />
           <Login />
         </Route>
 

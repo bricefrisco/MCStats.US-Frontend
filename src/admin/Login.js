@@ -20,7 +20,7 @@ export const Login = () => {
   const error = useSelector(selectError);
   const loading = useSelector(selectLoading);
 
-  if (loggedIn) return <Redirect to="/admin/panel" />;
+  if (loggedIn) return <Redirect to="/server-list" />;
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ export const Login = () => {
   return (
     <Container>
       <Row>
-        <Col xs={12} sm={12} md={12} lg={8} className="mx-auto pt-3">
+        <Col xs={12} sm={12} md={12} lg={8} className="mx-auto pt-5">
           <Form onSubmit={onSubmit}>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Email Address</Form.Label>
