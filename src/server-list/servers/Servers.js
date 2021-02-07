@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
+import { useHistory } from 'react-router-dom';
 
 import { parseResponse } from '../../utils/api';
 import { ServerInfo } from '../../shared/server-info';
+import { Select } from '../../shared/select';
 
 import Header from './Header';
 
 import './servers.css';
 
 export const Servers = () => {
+  const history = useHistory();
+
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [servers, setServers] = useState([]);
@@ -31,6 +35,12 @@ export const Servers = () => {
       });
   }, [page]);
 
+  const onSearch = (e) => {
+    console.log('event:', e);
+    if (e === null || e === undefined || e === '') return;
+    history.push(`/servers/${e.value}`);
+  };
+
   return (
     <>
       <div className="container d-flex justify-content-center mt-5">
@@ -41,6 +51,14 @@ export const Servers = () => {
             onPageChange={(e) => setPage(e.selected)}
           />
         </div>
+        <Select
+          width="300px"
+          className="ml-4"
+          placeholder="Search..."
+          isSearchable
+          isClearable
+          onChange={onSearch}
+        />
       </div>
 
       <div id="servers">

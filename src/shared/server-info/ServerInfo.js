@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 import { parseResponse } from '../../utils';
 import { Chart } from '../chart';
@@ -93,7 +94,9 @@ export const ServerInfo = ({ server }) => {
               style={{ fontSize: '1.17em' }}
               className="mt-0 mb-0 server-name"
             >
-              {server.name}
+              <Link to={`/servers/${server.name}`} className="link">
+                {server.name}
+              </Link>
             </h3>
             <h3 style={{ fontSize: '1.0em' }} className="mt-1 mb-1">
               {server.address}

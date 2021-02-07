@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartLine } from '@fortawesome/free-solid-svg-icons';
@@ -26,13 +27,9 @@ export const Header = () => {
 
   useEffect(() => {
     fetchStats();
-    const interval = setInterval(fetchStats, 5000);
-    setIntervalPointer(interval);
+    setIntervalPointer(setInterval(fetchStats, 5000));
 
-    return () => {
-      if (intervalPointer === null || intervalPointer === undefined) return;
-      clearInterval(intervalPointer);
-    };
+    return () => clearInterval(intervalPointer);
   }, []);
 
   return (
@@ -40,7 +37,11 @@ export const Header = () => {
       <div className="d-flex justify-content-between align-items-center">
         <div className="d-flex align-items-center">
           <FontAwesomeIcon icon={faChartLine} size="3x" color="#9882ac" />
-          <h1 className="mcstats-heading">MCStats</h1>
+          <h1>
+            <Link to="/server-list" className="mcstats-heading">
+              MCStats
+            </Link>
+          </h1>
         </div>
 
         <a

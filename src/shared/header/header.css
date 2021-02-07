@@ -4,8 +4,14 @@
 }
 
 .mcstats-heading {
+  color: #fff;
   margin-left: 10px;
   font-size: 48px;
+}
+
+.mcstats-heading:hover {
+  color: #fff;
+  cursor: pointer;
 }
 
 .mcstats-subheading {

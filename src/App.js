@@ -23,17 +23,17 @@ const App = () => {
           <Login />
         </Route>
 
-        <Route exact path="/:serverName">
+        <Route exact path="/servers/:serverName">
           <Header />
           <Server />
         </Route>
 
-        <Route exact path="/">
+        <Route exact path="/server-list">
           <Header />
           <Servers />
         </Route>
 
-        <Route path="/" children={<Redirect to="/" />} />
+        <Route path="/" children={<Redirect to="/server-list" />} />
       </Switch>
     </BrowserRouter>
   );

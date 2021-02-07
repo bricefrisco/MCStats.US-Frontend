@@ -79,11 +79,12 @@ nav > * {
   color: #fff;
 }
 
-.server-name {
+.link {
   color: #eedbff;
 }
 
-.server-name:hover {
+.link:hover {
+  color: #eedbff;
   text-decoration: underline;
   cursor: pointer;
 }
