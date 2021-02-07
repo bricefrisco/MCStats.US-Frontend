@@ -5,7 +5,9 @@ import Login from './admin/Login';
 import AdminNavigation from './admin/AdminNavbar';
 import AdminPanel from './admin/AdminPanel';
 
+import { Server } from './server';
 import { Servers } from './server-list/servers';
+import { Header } from './shared/header';
 
 const App = () => {
   return (
@@ -21,17 +23,17 @@ const App = () => {
           <Login />
         </Route>
 
-        <Route exact path="/:ip">
-          <div></div>
+        <Route exact path="/:serverName">
+          <Header />
+          <Server />
         </Route>
 
         <Route exact path="/">
+          <Header />
           <Servers />
         </Route>
 
-        <Route path="/">
-          <Redirect to="/" />
-        </Route>
+        <Route path="/" children={<Redirect to="/" />} />
       </Switch>
     </BrowserRouter>
   );

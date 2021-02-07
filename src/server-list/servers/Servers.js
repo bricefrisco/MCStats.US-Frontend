@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 
 import { parseResponse } from '../../utils/api';
-import { Server } from '../../shared/server-info';
+import { ServerInfo } from '../../shared/server-info';
 
 import Header from './Header';
 
@@ -33,8 +33,6 @@ export const Servers = () => {
 
   return (
     <>
-      <Header />
-
       <div className="container d-flex justify-content-center mt-5">
         <div className="pagination">
           <ReactPaginate
@@ -47,7 +45,7 @@ export const Servers = () => {
 
       <div id="servers">
         {servers.map((server) => (
-          <Server server={server} key={server.name} />
+          <ServerInfo server={server} key={server.name} />
         ))}
       </div>
     </>

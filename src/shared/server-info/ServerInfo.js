@@ -36,15 +36,20 @@ const fetchTimeseries = (serverName, selectedTimespan) => {
     .then(formatTimeseries);
 };
 
-export const Server = ({ server }) => {
+export const ServerChart = ({
+  serverName,
+  selectedTimespan,
+  height,
+  width,
+  className,
+}) => {
   const [timeseries, setTimeseries] = useState([]);
-  const [error, setError] = useState(false);
-  const [selectedTimespan, setSelectedTimespan] = useState('1h');
   const [intervalPointer, setIntervalPointer] = useState();
+  const [error, setError] = useState();
 
   const getTimeseries = () => {
-    fetchTimeseries(server.name, selectedTimespan)
-      .then((response) => setTimeseries(response))
+    fetchTimeseries(serverName, selectedTimespan)
+      .then(setTimeseries)
       .catch((err) => {
         if (err === null || err === undefined) {
           setError('Unknown error occurred');
@@ -58,7 +63,21 @@ export const Server = ({ server }) => {
     getTimeseries();
     setIntervalPointer(setInterval(getTimeseries, 60 * 1000));
     return () => clearInterval(intervalPointer);
-  }, [selectedTimespan, server.name]);
+  }, [serverName, selectedTimespan]);
+
+  return (
+    <div className={className}>
+      {timeseries.length > 0 ? (
+        <Chart data={timeseries} height={height} width={width} />
+      ) : (
+        <div style={{ width: `${width}px`, height: `${height}px` }} />
+      )}
+    </div>
+  );
+};
+
+export const ServerInfo = ({ server }) => {
+  const [selectedTimespan, setSelectedTimespan] = useState('1h');
 
   return (
     <div className="server">
@@ -143,11 +162,12 @@ export const Server = ({ server }) => {
         </div>
       </div>
 
-      {timeseries.length > 0 ? (
-        <Chart data={timeseries} height={150} width={500} />
-      ) : (
-        <div style={{ width: `500px`, height: '150px' }} />
-      )}
+      <ServerChart
+        serverName={server.name}
+        selectedTimespan={selectedTimespan}
+        height={150}
+        width={500}
+      />
     </div>
   );
 };
