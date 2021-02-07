@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,7 +10,7 @@ import './header.css';
 export const Header = () => {
   const [totalServers, setTotalServers] = useState(0);
   const [totalPlayers, setTotalPlayers] = useState(0);
-  const [intervalPointer, setIntervalPointer] = useState();
+  const intervalId = useRef(null);
 
   const fetchStats = () => {
     fetch(`${process.env.REACT_APP_BACKEND}/stats`)
@@ -27,9 +27,8 @@ export const Header = () => {
 
   useEffect(() => {
     fetchStats();
-    setIntervalPointer(setInterval(fetchStats, 5000));
-
-    return () => clearInterval(intervalPointer);
+    intervalId.current = setInterval(fetchStats, 5000);
+    return () => clearInterval(intervalId.current);
   }, []);
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
@@ -45,10 +45,12 @@ export const ServerChart = ({
   className,
 }) => {
   const [timeseries, setTimeseries] = useState([]);
-  const [intervalPointer, setIntervalPointer] = useState();
+  const intervalId = useRef(null);
   const [error, setError] = useState();
 
   const getTimeseries = () => {
+    console.log('FETCHING: timeseries for ' + serverName);
+
     fetchTimeseries(serverName, selectedTimespan)
       .then(setTimeseries)
       .catch((err) => {
@@ -62,8 +64,8 @@ export const ServerChart = ({
 
   useEffect(() => {
     getTimeseries();
-    setIntervalPointer(setInterval(getTimeseries, 60 * 1000));
-    return () => clearInterval(intervalPointer);
+    intervalId.current = setInterval(getTimeseries, 60 * 1000);
+    return () => clearInterval(intervalId.current);
   }, [serverName, selectedTimespan]);
 
   return (
