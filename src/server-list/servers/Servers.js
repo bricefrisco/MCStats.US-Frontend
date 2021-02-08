@@ -10,6 +10,7 @@ import { ServerInfo } from '../../shared/server-info';
 import { Select } from '../../shared/select';
 import { AddServer } from '../../shared/add-server';
 import { RemoveServer } from '../../shared/remove-server';
+import { RefreshServer } from '../../shared/refresh-server';
 
 import './servers.css';
 
@@ -50,7 +51,10 @@ export const Servers = () => {
 
   return (
     <>
-      <div className="container d-flex justify-content-center mt-5">
+      <div
+        id="top-bar"
+        className="container d-flex justify-content-center mt-5"
+      >
         <div className="pagination">
           <ReactPaginate
             page={page}
@@ -63,7 +67,6 @@ export const Servers = () => {
           className="ml-4"
           placeholder="Search..."
           isSearchable
-          isClearable
           onChange={onSearch}
         />
 
@@ -96,6 +99,11 @@ export const Servers = () => {
             <RemoveServer
               show={showRemoveServerModal}
               setShow={() => setShowRemoveServerModal(!showRemoveServerModal)}
+            />
+
+            <RefreshServer
+              show={showRefreshServerModal}
+              setShow={() => setShowRefreshServerModal(!showRefreshServerModal)}
             />
           </div>
         )}

@@ -52,7 +52,7 @@ export const Header = () => {
         </a>
       </div>
 
-      <p className="mcstats-subheading">
+      <h2 className="mcstats-subheading">
         Counting{' '}
         <span className="font-weight-bold">
           {totalPlayers === 0
@@ -65,8 +65,8 @@ export const Header = () => {
             ? 'many'
             : numberWithCommas(totalServers.toString())}
         </span>{' '}
-        servers
-      </p>
+        Minecraft servers
+      </h2>
     </div>
   );
 };

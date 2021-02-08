@@ -5,8 +5,9 @@ import { Modal, Button, Form, Alert } from 'react-bootstrap';
 
 import { selectLoggedIn, refresh, selectJwt } from '../../state/authSlice';
 import { parseResponse } from '../../utils/api';
+import { Select } from '../select';
 
-export const AddServer = ({ show, setShow }) => {
+export const RefreshServer = ({ show, setShow }) => {
   const dispatch = useDispatch();
   const authenticated = useSelector(selectLoggedIn);
   const jwt = useSelector(selectJwt);
@@ -15,21 +16,19 @@ export const AddServer = ({ show, setShow }) => {
   const [loading, setLoading] = useState(false);
 
   const [serverName, setServerName] = useState('');
-  const [serverIp, setServerIp] = useState('');
 
   if (!authenticated) return <Redirect to="/admin" />;
 
-  const addServer = (jwt) => {
+  const refreshServer = (jwt) => {
     setLoading(true);
-    fetch(`${process.env.REACT_APP_BACKEND}/servers`, {
-      method: 'POST',
+    fetch(`${process.env.REACT_APP_BACKEND}/servers/refresh`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + jwt,
       },
       body: JSON.stringify({
         name: serverName,
-        address: serverIp,
       }),
     })
       .then(parseResponse)
@@ -39,12 +38,12 @@ export const AddServer = ({ show, setShow }) => {
         setSuccess(response.message);
       })
       .catch((err) => {
-        if (err === null || err === undefined) {
+        if (err == null || err === undefined) {
           setSuccess(undefined);
           setLoading(false);
           setError('Unknown error occurred');
         } else if (err.toString().includes('Token')) {
-          dispatch(refresh((jwt) => addServer(jwt)));
+          dispatch(refresh((jwt) => refreshServer(jwt)));
         } else {
           setSuccess(undefined);
           setLoading(false);
@@ -55,49 +54,39 @@ export const AddServer = ({ show, setShow }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addServer(jwt);
+    refreshServer(jwt);
   };
 
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Add Server</Modal.Title>
+        <Modal.Title>Refresh Server</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={onSubmit}>
           <Form.Group>
             <Form.Label>Server Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Server Name"
-              value={serverName}
-              onChange={(e) => setServerName(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>Server IP</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Server IP"
-              value={serverIp}
-              onChange={(e) => setServerIp(e.target.value)}
+            <Select
+              width="300px"
+              placeholder="Search..."
+              isSearchable
+              onChange={(e) => setServerName(e.value)}
             />
           </Form.Group>
         </Form>
-
-        {error && (
-          <Alert variant="danger" className="mt-3">
-            {error}
-          </Alert>
-        )}
-
-        {success && (
-          <Alert variant="success" className="mt-3">
-            {success}
-          </Alert>
-        )}
       </Modal.Body>
+
+      {error && (
+        <Alert variant="danger" className="mt-3">
+          {error}
+        </Alert>
+      )}
+
+      {success && (
+        <Alert variant="success" className="mt-3">
+          {success}
+        </Alert>
+      )}
       <Modal.Footer>
         <Button disabled={loading || success} onClick={onSubmit}>
           Save

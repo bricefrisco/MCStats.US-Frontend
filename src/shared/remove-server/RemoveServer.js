@@ -19,7 +19,7 @@ export const RemoveServer = ({ show, setShow }) => {
 
   if (!authenticated) return <Redirect to="/admin" />;
 
-  const removeServer = () => {
+  const removeServer = (jwt) => {
     setLoading(true);
     fetch(`${process.env.REACT_APP_BACKEND}/servers`, {
       method: 'DELETE',
@@ -43,7 +43,7 @@ export const RemoveServer = ({ show, setShow }) => {
           setLoading(false);
           setError('Unknown error occurred');
         } else if (err.toString().includes('Token')) {
-          dispatch(refresh(() => removeServer()));
+          dispatch(refresh((jwt) => removeServer(jwt)));
         } else {
           setSuccess(undefined);
           setLoading(false);
@@ -54,13 +54,13 @@ export const RemoveServer = ({ show, setShow }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    removeServer();
+    removeServer(jwt);
   };
 
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Add Server</Modal.Title>
+        <Modal.Title>Remove Server</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={onSubmit}>
@@ -68,10 +68,8 @@ export const RemoveServer = ({ show, setShow }) => {
             <Form.Label>Server Name</Form.Label>
             <Select
               width="300px"
-              className="ml-4"
               placeholder="Search..."
               isSearchable
-              isClearable
               onChange={(e) => setServerName(e.value)}
             />
           </Form.Group>

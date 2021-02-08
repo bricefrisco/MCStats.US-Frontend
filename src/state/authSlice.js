@@ -19,6 +19,11 @@ export const authSlice = createSlice({
       state.error = false;
     },
 
+    refreshLoading: (state) => {
+      state.loading = true;
+      state.error = false;
+    },
+
     errored: (state, action) => {
       state.loggedIn = false;
       state.loading = false;
@@ -45,7 +50,13 @@ export const authSlice = createSlice({
   },
 });
 
-export const { loading, errored, loaded, logOut } = authSlice.actions;
+export const {
+  loading,
+  refreshLoading,
+  errored,
+  loaded,
+  logOut,
+} = authSlice.actions;
 
 export const selectLoggedIn = (state) => state.auth.loggedIn;
 export const selectLoading = (state) => state.auth.loading;
@@ -86,7 +97,7 @@ export const login = (email, password) => (dispatch) => {
 };
 
 export const refresh = (callback) => (dispatch, getState) => {
-  dispatch(loading());
+  dispatch(refreshLoading());
   const jwt = getState().auth.jwt;
   const refreshToken = getState().auth.refreshToken;
   const email = getState().auth.email;
@@ -108,8 +119,9 @@ export const refresh = (callback) => (dispatch, getState) => {
           refreshToken: response.refreshToken,
         })
       );
+      return response.jwt;
     })
-    .then(() => callback())
+    .then((jwt) => callback(jwt))
     .catch((err) => {
       dispatch(
         errored(

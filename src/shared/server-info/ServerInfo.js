@@ -49,8 +49,6 @@ export const ServerChart = ({
   const [error, setError] = useState();
 
   const getTimeseries = () => {
-    console.log('FETCHING: timeseries for ' + serverName);
-
     fetchTimeseries(serverName, selectedTimespan)
       .then(setTimeseries)
       .catch((err) => {
