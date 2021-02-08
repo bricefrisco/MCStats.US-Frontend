@@ -1,0 +1,35 @@
+version: 2.1
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:14.9.0-buster
+    
+    working_directory: ~/application
+
+    steps:
+      - checkout
+
+      - setup_remote_docker
+          version: 19.03.13
+      
+      - run:
+          name: Install dependencies
+          command: npm install
+
+      - run:
+          name: Webpack JS files
+          command: CI= npm run build
+
+      - run:
+          name: Deploy to server
+          command: scp -o StrictHostKeyChecking=no -r /home/circleci/application/build/* $HOST:/var/www/html
