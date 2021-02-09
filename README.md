@@ -1,68 +1,31 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+<p align="center">
+	<img src="https://i.imgur.com/hprX8oH.png">
+</p>
 
-## Available Scripts
+# MCStats : front-end
 
-In the project directory, you can run:
+Realtime Minecraft server player counter. View both realtime and historical player counts of many of the most popular Minecraft servers. Heavily inspired by [Minetrack](https://github.com/Cryptkeeper/Minetrack 'Minetrack').
 
-### `npm start`
+The ultimate goal is to count half a million Minecraft players during peak hours on over 1,000 Minecraft servers! I would like for as many servers as possible to be included. Currently, more popular servers (200+ players at peak hours) are prioritized to have the biggest impact.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Features
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- 📈 View player count history with pretty line charts!
+- 👉 Select different timespans to see.
+- 💽 Data is kept for two months, so you can see up-to two months history.
+- 🕵️‍ Discover when servers are/are not at peak hours.
 
-### `npm test`
+### Libraries and Frameworks: Front-end
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- MCStats front-end is written in [React](https://reactjs.org/ 'React').
+- The charts are created with [ApexCharts](https://apexcharts.com/ 'ApexCharts').
+- Pagination added using [react-paginate](https://github.com/AdeleD/react-paginate 'react-paginate').
+- The searchable dropdown menu uses [react-select](https://react-select.com/home 'react-select').
 
-### `npm run build`
+### Libraries and Frameworks: Back-end
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Written with Java and [Spring Boot](https://spring.io/projects/spring-boot 'Spring Boot').
+- Data is stored in [MongoDB](https://www.mongodb.com/ 'MongoDB').
+- Data is gathered by using [minecraft-server-ping](https://github.com/lucaazalim/minecraft-server-ping 'minecraft-server-ping').
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Check out the [back-end](https://github.com/bricefrisco/mcstats-us-backend 'back-end') code as well!
