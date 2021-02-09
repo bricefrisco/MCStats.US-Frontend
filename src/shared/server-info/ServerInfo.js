@@ -53,14 +53,13 @@ export const ServerChart = ({
   const [error, setError] = useState();
 
   const getTimeseries = () => {
-    setTimeout(() => setLoadedOnce(true), 650);
     fetchTimeseries(serverName, selectedTimespan)
       .then((response) => {
         setTimeseries(response);
-        // setLoadedOnce(true);
+        setLoadedOnce(true);
       })
       .catch((err) => {
-        // setLoadedOnce(true);
+        setLoadedOnce(true);
         if (err === null || err === undefined) {
           setError('Unknown error occurred');
         } else {
