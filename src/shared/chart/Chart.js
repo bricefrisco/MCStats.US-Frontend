@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import './chart.css';
 
-export const Chart = ({ data, height, width }) => {
+export const Chart = ({ data, height, width, style }) => {
   const options = {
     chart: {
       type: 'area',
@@ -128,6 +128,7 @@ export const Chart = ({ data, height, width }) => {
       type="area"
       height={height}
       width={width}
+      style={style}
     />
   );
 };
