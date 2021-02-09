@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
+import ReactPlaceholder from 'react-placeholder';
 import { Link } from 'react-router-dom';
 
 import { parseResponse } from '../../utils';
 import { Chart } from '../chart';
 
+import 'react-placeholder/lib/reactPlaceholder.css';
 import './server.css';
 
 const getTimespan = (timespan) => {
@@ -43,15 +45,21 @@ export const ServerChart = ({
   height,
   width,
   className,
+  style,
 }) => {
   const [timeseries, setTimeseries] = useState([]);
   const intervalId = useRef(null);
+  const [loadedOnce, setLoadedOnce] = useState(false);
   const [error, setError] = useState();
 
   const getTimeseries = () => {
     fetchTimeseries(serverName, selectedTimespan)
-      .then(setTimeseries)
+      .then((response) => {
+        setTimeseries(response);
+        setLoadedOnce(true);
+      })
       .catch((err) => {
+        setLoadedOnce(true);
         if (err === null || err === undefined) {
           setError('Unknown error occurred');
         } else {
@@ -68,11 +76,21 @@ export const ServerChart = ({
 
   return (
     <div className={className}>
-      {timeseries.length > 0 ? (
-        <Chart data={timeseries} height={height} width={width} />
-      ) : (
-        <div style={{ width: `${width}px`, height: `${height}px` }} />
-      )}
+      <ReactPlaceholder
+        ready={loadedOnce}
+        type="text"
+        color="rgba(69, 55, 80, 0.4)"
+        style={{
+          height: height - 10,
+          width: width - 50,
+          marginLeft: '50px',
+          marginTop: '10px',
+        }}
+        rows={4}
+        showLoadingAnimation={true}
+      >
+        <Chart data={timeseries} height={height} width={width} style={style} />
+      </ReactPlaceholder>
     </div>
   );
 };
@@ -170,6 +188,7 @@ export const ServerInfo = ({ server }) => {
         selectedTimespan={selectedTimespan}
         height={150}
         width={500}
+        style={{ marginTop: '-20px' }}
       />
     </div>
   );
