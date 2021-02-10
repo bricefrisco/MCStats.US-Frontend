@@ -17,15 +17,18 @@ const getTimespan = (timespan) => {
   if (timespan === '2m') return moment().subtract(2, 'months').format();
 };
 
-const formatTimeseries = (timeseries) => [
-  {
-    name: 'Players',
-    data: timeseries.map((res) => ({
-      x: new Date(res.date),
-      y: res.playersOnline,
-    })),
-  },
-];
+const formatTimeseries = (timeseries) => {
+  console.log(timeseries);
+  return [
+    {
+      name: 'Players',
+      data: timeseries.map((res) => ({
+        x: new Date(res.t),
+        y: res.o,
+      })),
+    },
+  ];
+};
 
 const fetchTimeseries = (serverName, selectedTimespan) => {
   return fetch(
