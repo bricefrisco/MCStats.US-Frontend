@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
-import ReactPlaceholder from 'react-placeholder';
 
 import { parseResponse } from '../../utils';
 import './chart.css';
@@ -49,17 +48,14 @@ export const ServerChart = ({
 }) => {
   const [timeseries, setTimeseries] = useState([]);
   const intervalId = useRef(null);
-  const [loadedOnce, setLoadedOnce] = useState(false);
   const [error, setError] = useState();
 
   const getTimeseries = () => {
     fetchTimeseries(serverName, selectedTimespan)
       .then((response) => {
         setTimeseries(response);
-        setLoadedOnce(true);
       })
       .catch((err) => {
-        setLoadedOnce(true);
         if (err === null || err === undefined) {
           setError('Unknown error occurred');
         } else {
@@ -76,21 +72,7 @@ export const ServerChart = ({
 
   return (
     <div className={className}>
-      <ReactPlaceholder
-        ready={loadedOnce}
-        type="text"
-        color="rgba(69, 55, 80, 0.4)"
-        style={{
-          height: height - 10,
-          width: width - 50,
-          marginLeft: '50px',
-          marginTop: '10px',
-        }}
-        rows={4}
-        showLoadingAnimation={true}
-      >
-        <Chart data={timeseries} height={height} width={width} style={style} />
-      </ReactPlaceholder>
+      <Chart data={timeseries} height={height} width={width} style={style} />
     </div>
   );
 };
