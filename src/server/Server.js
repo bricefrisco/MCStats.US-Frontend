@@ -83,7 +83,7 @@ export const Server = () => {
       return;
     }
 
-    setChartHeight('250px');
+    setChartHeight('225px');
   };
 
   useEffect(() => {
@@ -100,6 +100,7 @@ export const Server = () => {
   }, [serverName]);
 
   useEffect(() => {
+    updateSize();
     window.addEventListener('resize', updateSize);
   }, []);
 
