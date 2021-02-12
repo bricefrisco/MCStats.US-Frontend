@@ -25,15 +25,27 @@
   margin-left: 5px;
 }
 
-@media (max-width: 1500px) {
+.search-bar {
+  margin-left: 20px;
+}
+
+@media (max-width: 1600px) {
   #servers {
     grid-template-columns: auto;
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 1000px) {
   #top-bar {
     flex-direction: column;
     align-items: center;
+  }
+
+  .search-bar {
+    margin-left: 0px;
+  }
+
+  .pagination > ul {
+    padding-left: 0px;
   }
 }

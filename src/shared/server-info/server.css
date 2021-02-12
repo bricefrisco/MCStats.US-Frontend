@@ -5,7 +5,7 @@
 }
 
 .server-info {
-  min-width: 220px;
+  min-width: 260px;
 }
 
 .timespan-selection-container {
@@ -26,19 +26,41 @@
   cursor: pointer;
 }
 
-@media (max-width: 732px) {
+@media (max-width: 1600px) {
+  .server {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 1000px) {
   .server {
     display: block;
     margin-bottom: 20px;
     min-width: auto;
   }
 
+  .server {
+    margin-bottom: 40px;
+  }
+
   .server-info {
     min-width: auto;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .timespan-selection {
+    margin-left: 15px;
+    max-height: 23px;
+  }
+}
+
+@media (max-width: 520px) {
+  .server-info {
+    flex-direction: column;
   }
 
   .timespan-selection-container {
-    padding-left: 10px;
-    padding-right: 10px;
+    justify-content: flex-end;
   }
 }

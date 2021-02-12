@@ -1,105 +1,48 @@
-import React, { useState, useEffect, useRef } from 'react';
-import moment from 'moment';
-import ReactPlaceholder from 'react-placeholder';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-import { parseResponse } from '../../utils';
-import { Chart } from '../chart';
+import { ServerChart } from '../chart';
 
 import 'react-placeholder/lib/reactPlaceholder.css';
 import './server.css';
 
-const getTimespan = (timespan) => {
-  if (timespan === '1h') return moment().subtract(1, 'hours').format();
-  if (timespan === '1d') return moment().subtract(24, 'hours').format();
-  if (timespan === '1w') return moment().subtract(1, 'week').format();
-  if (timespan === '1m') return moment().subtract(1, 'months').format();
-  if (timespan === '2m') return moment().subtract(2, 'months').format();
-};
+export const ServerInfo = ({ server }) => {
+  const [selectedTimespan, setSelectedTimespan] = useState('1h');
+  const [chartWidth, setChartWidth] = useState('500px');
+  const [chartHeight, setChartHeight] = useState('150px');
+  const [chartMargin, setChartMargin] = useState('-20px');
 
-const formatTimeseries = (timeseries) => {
-  console.log(timeseries);
-  return [
-    {
-      name: 'Players',
-      data: timeseries.map((res) => ({
-        x: new Date(res.t),
-        y: res.o,
-      })),
-    },
-  ];
-};
+  const updateSize = () => {
+    const windowWidth = window.innerWidth;
 
-const fetchTimeseries = (serverName, selectedTimespan) => {
-  return fetch(
-    `${
-      process.env.REACT_APP_BACKEND
-    }/timeseries?serverName=${serverName}&lt=${moment().format()}&gt=${getTimespan(
-      selectedTimespan
-    )}`
-  )
-    .then(parseResponse)
-    .then(formatTimeseries);
-};
+    if (windowWidth > 1600) {
+      setChartWidth('500px');
+      setChartHeight('150px');
+      return;
+    }
 
-export const ServerChart = ({
-  serverName,
-  selectedTimespan,
-  height,
-  width,
-  className,
-  style,
-}) => {
-  const [timeseries, setTimeseries] = useState([]);
-  const intervalId = useRef(null);
-  const [loadedOnce, setLoadedOnce] = useState(false);
-  const [error, setError] = useState();
+    if (windowWidth > 1000) {
+      setChartWidth('700px');
+      setChartHeight('150px');
+      return;
+    }
 
-  const getTimeseries = () => {
-    fetchTimeseries(serverName, selectedTimespan)
-      .then((response) => {
-        setTimeseries(response);
-        setLoadedOnce(true);
-      })
-      .catch((err) => {
-        setLoadedOnce(true);
-        if (err === null || err === undefined) {
-          setError('Unknown error occurred');
-        } else {
-          setError(err.toString());
-        }
-      });
+    if (windowWidth > 720) {
+      setChartWidth('700px');
+      setChartHeight('150px');
+      setChartMargin('0px');
+      return;
+    }
+
+    setChartWidth(windowWidth - 30);
+    setChartHeight('150px');
+    setChartMargin('0px');
   };
 
   useEffect(() => {
-    getTimeseries();
-    intervalId.current = setInterval(getTimeseries, 60 * 1000);
-    return () => clearInterval(intervalId.current);
-  }, [serverName, selectedTimespan]);
-
-  return (
-    <div className={className}>
-      <ReactPlaceholder
-        ready={loadedOnce}
-        type="text"
-        color="rgba(69, 55, 80, 0.4)"
-        style={{
-          height: height - 10,
-          width: width - 50,
-          marginLeft: '50px',
-          marginTop: '10px',
-        }}
-        rows={4}
-        showLoadingAnimation={true}
-      >
-        <Chart data={timeseries} height={height} width={width} style={style} />
-      </ReactPlaceholder>
-    </div>
-  );
-};
-
-export const ServerInfo = ({ server }) => {
-  const [selectedTimespan, setSelectedTimespan] = useState('1h');
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
 
   return (
     <div className="server">
@@ -189,9 +132,9 @@ export const ServerInfo = ({ server }) => {
       <ServerChart
         serverName={server.name}
         selectedTimespan={selectedTimespan}
-        height={150}
-        width={500}
-        style={{ marginTop: '-20px' }}
+        height={chartHeight}
+        width={chartWidth}
+        style={{ marginTop: chartMargin }}
       />
     </div>
   );

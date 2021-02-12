@@ -1,8 +1,99 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
+import ReactPlaceholder from 'react-placeholder';
 
+import { parseResponse } from '../../utils';
 import './chart.css';
+
+const formatTimeseries = (timeseries) => {
+  console.log(timeseries);
+  return [
+    {
+      name: 'Players',
+      data: timeseries.map((res) => ({
+        x: new Date(res.t),
+        y: res.o,
+      })),
+    },
+  ];
+};
+
+const getTimespan = (timespan) => {
+  if (timespan === '1h') return moment().subtract(1, 'hours').format();
+  if (timespan === '1d') return moment().subtract(24, 'hours').format();
+  if (timespan === '1w') return moment().subtract(1, 'week').format();
+  if (timespan === '1m') return moment().subtract(1, 'months').format();
+  if (timespan === '2m') return moment().subtract(2, 'months').format();
+};
+
+const fetchTimeseries = (serverName, selectedTimespan) => {
+  return fetch(
+    `${
+      process.env.REACT_APP_BACKEND
+    }/timeseries?serverName=${serverName}&lt=${moment().format()}&gt=${getTimespan(
+      selectedTimespan
+    )}`
+  )
+    .then(parseResponse)
+    .then(formatTimeseries);
+};
+
+export const ServerChart = ({
+  serverName,
+  selectedTimespan,
+  height,
+  width,
+  className,
+  style,
+}) => {
+  const [timeseries, setTimeseries] = useState([]);
+  const intervalId = useRef(null);
+  const [loadedOnce, setLoadedOnce] = useState(false);
+  const [error, setError] = useState();
+
+  const getTimeseries = () => {
+    fetchTimeseries(serverName, selectedTimespan)
+      .then((response) => {
+        setTimeseries(response);
+        setLoadedOnce(true);
+      })
+      .catch((err) => {
+        setLoadedOnce(true);
+        if (err === null || err === undefined) {
+          setError('Unknown error occurred');
+        } else {
+          setError(err.toString());
+        }
+      });
+  };
+
+  useEffect(() => {
+    getTimeseries();
+    intervalId.current = setInterval(getTimeseries, 60 * 1000);
+    return () => clearInterval(intervalId.current);
+  }, [serverName, selectedTimespan]);
+
+  return (
+    <div className={className}>
+      <ReactPlaceholder
+        ready={loadedOnce}
+        type="text"
+        color="rgba(69, 55, 80, 0.4)"
+        style={{
+          height: height - 10,
+          width: width - 50,
+          marginLeft: '50px',
+          marginTop: '10px',
+        }}
+        rows={4}
+        showLoadingAnimation={true}
+      >
+        <Chart data={timeseries} height={height} width={width} style={style} />
+      </ReactPlaceholder>
+    </div>
+  );
+};
 
 export const Chart = ({ data, height, width, style }) => {
   const options = {
