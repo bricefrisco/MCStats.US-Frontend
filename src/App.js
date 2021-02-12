@@ -21,12 +21,12 @@ const App = () => {
           <Server />
         </Route>
 
-        <Route exact path="/server-list">
+        <Route exact path="/server-list/:page">
           <Header />
           <Servers />
         </Route>
 
-        <Route path="/" children={<Redirect to="/server-list" />} />
+        <Route path="/" children={<Redirect to="/server-list/1" />} />
       </Switch>
     </BrowserRouter>
   );
