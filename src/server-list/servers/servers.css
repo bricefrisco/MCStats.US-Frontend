@@ -48,4 +48,9 @@
   .pagination > ul {
     padding-left: 0px;
   }
+
+  .pagination {
+    flex-direction: column;
+    align-items: center;
+  }
 }
