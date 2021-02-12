@@ -65,7 +65,11 @@ export const ServerChart = ({
   };
 
   useEffect(() => {
-    if (updatedTimeseries.length !== 0 || selectedTimespan !== '1h') {
+    if (
+      updatedTimeseries.length !== 0 ||
+      timeseries.length === 0 ||
+      selectedTimespan !== '1h'
+    ) {
       getTimeseries();
     }
 
