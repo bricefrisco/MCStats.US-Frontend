@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, Redirect } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import moment from 'moment';
 
 import { selectLoggedIn } from '../../state/authSlice';
 import { parseResponse } from '../../utils/api';
@@ -11,16 +13,30 @@ import { Select } from '../../shared/select';
 import { AddServer } from '../../shared/add-server';
 import { RemoveServer } from '../../shared/remove-server';
 import { RefreshServer } from '../../shared/refresh-server';
+import { Loading } from '../../shared/loading';
 
 import './servers.css';
 
+const formatTimeseries = (timeseries) => {
+  return [
+    {
+      name: 'Players',
+      data: timeseries.map((res) => ({
+        x: new Date(res.t),
+        y: res.o,
+      })),
+    },
+  ];
+};
+
 export const Servers = () => {
   const history = useHistory();
+  const { page } = useParams();
   const authenticated = useSelector(selectLoggedIn);
 
-  const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [servers, setServers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const [showAddServerModal, setShowAddServerModal] = useState(false);
@@ -28,18 +44,34 @@ export const Servers = () => {
   const [showRefreshServerModal, setShowRefreshServerModal] = useState(false);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND}/servers?page=${page}&pageSize=6`)
+    console.log('setting loading to true');
+    setLoading(true);
+
+    fetch(
+      `${process.env.REACT_APP_BACKEND}/timeseries/batch?page=${
+        page - 1
+      }&pageSize=6&lt=${moment().format()}&gt=${moment()
+        .subtract(1, 'hours')
+        .format()}`
+    )
       .then(parseResponse)
       .then((response) => {
-        setPage(response.number);
+        setServers(
+          response.servers.map((server) => ({
+            ...server,
+            timeseries: formatTimeseries(server.timeseries),
+          }))
+        );
         setTotalPages(response.totalPages);
-        setServers(response.content);
+        setLoading(false);
       })
       .catch((err) => {
         if (err === null || err === undefined) {
           setError('Unknown error occurred.');
+          setLoading(false);
         } else {
           setError(err.toString());
+          setLoading(false);
         }
       });
   }, [page]);
@@ -47,6 +79,11 @@ export const Servers = () => {
   const onSearch = (e) => {
     if (e === null || e === undefined || e === '') return;
     history.push(`/servers/${e.value}`);
+  };
+
+  const onPageChange = (page) => {
+    if (page + 1 !== page) setLoading(true);
+    history.push(`/server-list/${page + 1}`);
   };
 
   return (
@@ -100,26 +137,41 @@ export const Servers = () => {
       >
         <div className="pagination">
           <ReactPaginate
-            page={page}
+            forcePage={page - 1}
             pageCount={totalPages}
-            onPageChange={(e) => setPage(e.selected)}
+            onPageChange={(e) => onPageChange(e.selected)}
+          />
+
+          <Select
+            width="300px"
+            className="search-bar"
+            placeholder="Search..."
+            isSearchable
+            onChange={onSearch}
           />
         </div>
-
-        <Select
-          width="300px"
-          className="search-bar"
-          placeholder="Search..."
-          isSearchable
-          onChange={onSearch}
-        />
       </div>
 
-      <div id="servers">
-        {servers.map((server) => (
-          <ServerInfo server={server} key={server.name} />
-        ))}
-      </div>
+      {loading ? (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Loading type="cubes" />
+        </div>
+      ) : (
+        <div id="servers">
+          {servers.map((server) => (
+            <ServerInfo
+              server={{
+                name: server.name,
+                address: server.address,
+                image: server.image,
+                onlinePlayers: server.onlinePlayers,
+                timeseries: server.timeseries,
+              }}
+              key={server.name}
+            />
+          ))}
+        </div>
+      )}
     </>
   );
 };

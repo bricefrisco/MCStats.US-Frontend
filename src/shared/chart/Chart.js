@@ -6,7 +6,6 @@ import { parseResponse } from '../../utils';
 import './chart.css';
 
 const formatTimeseries = (timeseries) => {
-  console.log(timeseries);
   return [
     {
       name: 'Players',
@@ -45,15 +44,16 @@ export const ServerChart = ({
   width,
   className,
   style,
+  timeseries = [],
 }) => {
-  const [timeseries, setTimeseries] = useState([]);
+  const [updatedTimeseries, setUpdatedTimeseries] = useState([]);
   const intervalId = useRef(null);
   const [error, setError] = useState();
 
   const getTimeseries = () => {
     fetchTimeseries(serverName, selectedTimespan)
       .then((response) => {
-        setTimeseries(response);
+        setUpdatedTimeseries(response);
       })
       .catch((err) => {
         if (err === null || err === undefined) {
@@ -65,14 +65,22 @@ export const ServerChart = ({
   };
 
   useEffect(() => {
-    getTimeseries();
+    if (updatedTimeseries.length !== 0 || selectedTimespan !== '1h') {
+      getTimeseries();
+    }
+
     intervalId.current = setInterval(getTimeseries, 60 * 1000);
     return () => clearInterval(intervalId.current);
   }, [serverName, selectedTimespan]);
 
   return (
     <div className={className}>
-      <Chart data={timeseries} height={height} width={width} style={style} />
+      <Chart
+        data={updatedTimeseries.length === 0 ? timeseries : updatedTimeseries}
+        height={height}
+        width={width}
+        style={style}
+      />
     </div>
   );
 };
@@ -145,27 +153,7 @@ export const Chart = ({ data, height, width, style }) => {
         },
 
         style: {
-          colors: [
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-            'rgba(255, 255, 255, 0.7)',
-          ],
+          colors: Array(25).fill('rgba(255, 255, 255, 0.7)'),
         },
       },
 

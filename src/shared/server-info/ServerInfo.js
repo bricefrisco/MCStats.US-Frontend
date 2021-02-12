@@ -135,6 +135,7 @@ export const ServerInfo = ({ server }) => {
         height={chartHeight}
         width={chartWidth}
         style={{ marginTop: chartMargin }}
+        timeseries={server.timeseries}
       />
     </div>
   );
