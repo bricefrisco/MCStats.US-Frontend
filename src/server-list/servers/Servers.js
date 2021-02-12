@@ -51,6 +51,49 @@ export const Servers = () => {
 
   return (
     <>
+      {authenticated && (
+        <div
+          style={{
+            maxHeight: '40px',
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '15px',
+            marginBottom: '-10px',
+          }}
+        >
+          <Button className="ml-2" onClick={() => setShowAddServerModal(true)}>
+            Add Server
+          </Button>
+          <Button
+            className="ml-3"
+            onClick={() => setShowRemoveServerModal(true)}
+          >
+            Remove Server
+          </Button>
+          <Button
+            className="ml-3"
+            onClick={() => setShowRefreshServerModal(true)}
+          >
+            Refresh Server
+          </Button>
+
+          <AddServer
+            show={showAddServerModal}
+            setShow={() => setShowAddServerModal(!showAddServerModal)}
+          />
+
+          <RemoveServer
+            show={showRemoveServerModal}
+            setShow={() => setShowRemoveServerModal(!showRemoveServerModal)}
+          />
+
+          <RefreshServer
+            show={showRefreshServerModal}
+            setShow={() => setShowRefreshServerModal(!showRefreshServerModal)}
+          />
+        </div>
+      )}
+
       <div
         id="top-bar"
         className="container d-flex justify-content-center mt-5"
@@ -62,51 +105,14 @@ export const Servers = () => {
             onPageChange={(e) => setPage(e.selected)}
           />
         </div>
+
         <Select
           width="300px"
-          className="ml-4"
+          className="search-bar"
           placeholder="Search..."
           isSearchable
           onChange={onSearch}
         />
-
-        {authenticated && (
-          <div style={{ maxHeight: '40px' }} className="ml-3">
-            <Button
-              className="ml-1"
-              onClick={() => setShowAddServerModal(true)}
-            >
-              Add Server
-            </Button>
-            <Button
-              className="ml-1"
-              onClick={() => setShowRemoveServerModal(true)}
-            >
-              Remove Server
-            </Button>
-            <Button
-              className="ml-1"
-              onClick={() => setShowRefreshServerModal(true)}
-            >
-              Refresh Server
-            </Button>
-
-            <AddServer
-              show={showAddServerModal}
-              setShow={() => setShowAddServerModal(!showAddServerModal)}
-            />
-
-            <RemoveServer
-              show={showRemoveServerModal}
-              setShow={() => setShowRemoveServerModal(!showRemoveServerModal)}
-            />
-
-            <RefreshServer
-              show={showRefreshServerModal}
-              setShow={() => setShowRefreshServerModal(!showRefreshServerModal)}
-            />
-          </div>
-        )}
       </div>
 
       <div id="servers">
