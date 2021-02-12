@@ -66,7 +66,7 @@ export const ServerInfo = ({ server }) => {
               {server.address}
             </h3>
             <span className="mt-1 mb-1" style={{ fontSize: '0.95em' }}>
-              Players: {server.players}
+              Players: {server.onlinePlayers}
             </span>
           </div>
         </div>
