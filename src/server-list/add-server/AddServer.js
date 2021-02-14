@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import { Modal, Button, Form, Alert } from 'react-bootstrap';
+import React, {useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {Redirect} from 'react-router-dom';
+import {Modal, Button, Form, Alert} from 'react-bootstrap';
 
-import { selectLoggedIn, refresh, selectJwt } from '../../state/authSlice';
-import { parseResponse } from '../../utils/api';
-import { Select } from '../select';
+import {selectLoggedIn, refresh, selectJwt} from '../../state/authSlice';
+import {parseResponse} from '../../utils/api';
 
-export const RemoveServer = ({ show, setShow }) => {
+export const AddServer = ({show, setShow}) => {
   const dispatch = useDispatch();
   const authenticated = useSelector(selectLoggedIn);
   const jwt = useSelector(selectJwt);
@@ -16,19 +15,21 @@ export const RemoveServer = ({ show, setShow }) => {
   const [loading, setLoading] = useState(false);
 
   const [serverName, setServerName] = useState('');
+  const [serverIp, setServerIp] = useState('');
 
-  if (!authenticated) return <Redirect to="/admin" />;
+  if (!authenticated) return <Redirect to="/admin"/>;
 
-  const removeServer = (jwt) => {
+  const addServer = (jwt) => {
     setLoading(true);
     fetch(`${process.env.REACT_APP_BACKEND}/servers`, {
-      method: 'DELETE',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + jwt,
       },
       body: JSON.stringify({
         name: serverName,
+        address: serverIp,
       }),
     })
       .then(parseResponse)
@@ -43,7 +44,7 @@ export const RemoveServer = ({ show, setShow }) => {
           setLoading(false);
           setError('Unknown error occurred');
         } else if (err.toString().includes('Token')) {
-          dispatch(refresh((jwt) => removeServer(jwt)));
+          dispatch(refresh((jwt) => addServer(jwt)));
         } else {
           setSuccess(undefined);
           setLoading(false);
@@ -54,39 +55,49 @@ export const RemoveServer = ({ show, setShow }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    removeServer(jwt);
+    addServer(jwt);
   };
 
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Remove Server</Modal.Title>
+        <Modal.Title>Add Server</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={onSubmit}>
           <Form.Group>
             <Form.Label>Server Name</Form.Label>
-            <Select
-              width="300px"
-              placeholder="Search..."
-              isSearchable
-              onChange={(e) => setServerName(e.value)}
+            <Form.Control
+              type="text"
+              placeholder="Server Name"
+              value={serverName}
+              onChange={(e) => setServerName(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Server IP</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Server IP"
+              value={serverIp}
+              onChange={(e) => setServerIp(e.target.value)}
             />
           </Form.Group>
         </Form>
+
+        {error && (
+          <Alert variant="danger" className="mt-3">
+            {error}
+          </Alert>
+        )}
+
+        {success && (
+          <Alert variant="success" className="mt-3">
+            {success}
+          </Alert>
+        )}
       </Modal.Body>
-
-      {error && (
-        <Alert variant="danger" className="mt-3">
-          {error}
-        </Alert>
-      )}
-
-      {success && (
-        <Alert variant="success" className="mt-3">
-          {success}
-        </Alert>
-      )}
       <Modal.Footer>
         <Button disabled={loading || success} onClick={onSubmit}>
           Save

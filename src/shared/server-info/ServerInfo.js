@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ServerChart } from '../chart';
+import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
+import {ServerChart} from '../chart';
 
 import 'react-placeholder/lib/reactPlaceholder.css';
 import './server.css';
 
-export const ServerInfo = ({ server }) => {
+export const ServerInfo = ({server}) => {
   const [selectedTimespan, setSelectedTimespan] = useState('1h');
   const [chartWidth, setChartWidth] = useState('500px');
   const [chartHeight, setChartHeight] = useState('150px');
@@ -51,21 +51,21 @@ export const ServerInfo = ({ server }) => {
           <img
             src={server.image}
             alt={`${server.name} favicon`}
-            style={{ width: '64px', height: '64px' }}
+            style={{width: '64px', height: '64px'}}
           />
           <div className="ml-2">
             <h3
-              style={{ fontSize: '1.17em' }}
+              style={{fontSize: '1.17em'}}
               className="mt-0 mb-0 server-name"
             >
               <Link to={`/servers/${server.name}`} className="link">
                 {server.name}
               </Link>
             </h3>
-            <h3 style={{ fontSize: '1.0em' }} className="mt-1 mb-1">
+            <h3 style={{fontSize: '1.0em'}} className="mt-1 mb-1">
               {server.address}
             </h3>
-            <span className="mt-1 mb-1" style={{ fontSize: '0.95em' }}>
+            <span className="mt-1 mb-1" style={{fontSize: '0.95em'}}>
               Players: {server.onlinePlayers}
             </span>
           </div>
@@ -134,7 +134,7 @@ export const ServerInfo = ({ server }) => {
         selectedTimespan={selectedTimespan}
         height={chartHeight}
         width={chartWidth}
-        style={{ marginTop: chartMargin }}
+        style={{marginTop: chartMargin}}
         timeseries={server.timeseries}
       />
     </div>

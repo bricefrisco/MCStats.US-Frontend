@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { parseResponse } from '../utils';
+import {createSlice} from '@reduxjs/toolkit';
+import {parseResponse} from '../utils';
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -73,7 +73,7 @@ export const login = (email, password) => (dispatch) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({email, password}),
   })
     .then(parseResponse)
     .then((response) => {
@@ -108,7 +108,7 @@ export const refresh = (callback) => (dispatch, getState) => {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + jwt,
     },
-    body: JSON.stringify({ jwt: 'Bearer ' + jwt, refreshToken }),
+    body: JSON.stringify({jwt: 'Bearer ' + jwt, refreshToken}),
   })
     .then(parseResponse)
     .then((response) => {
