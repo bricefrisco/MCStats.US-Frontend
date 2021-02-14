@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {ServerChart} from '../chart';
+import moment from 'moment';
 
 import 'react-placeholder/lib/reactPlaceholder.css';
 import './server.css';
+import {numberWithCommas} from "../../utils";
 
 export const ServerInfo = ({server, updateTimeseries}) => {
   const [selectedTimespan, setSelectedTimespan] = useState('1h');
@@ -16,25 +18,25 @@ export const ServerInfo = ({server, updateTimeseries}) => {
 
     if (windowWidth > 1600) {
       setChartWidth('500px');
-      setChartHeight('150px');
+      setChartHeight('170px');
       return;
     }
 
     if (windowWidth > 1000) {
       setChartWidth('700px');
-      setChartHeight('150px');
+      setChartHeight('170px');
       return;
     }
 
     if (windowWidth > 720) {
       setChartWidth('700px');
-      setChartHeight('150px');
+      setChartHeight('170px');
       setChartMargin('0px');
       return;
     }
 
     setChartWidth(windowWidth - 30);
-    setChartHeight('150px');
+    setChartHeight('170px');
     setChartMargin('0px');
   };
 
@@ -67,11 +69,15 @@ export const ServerInfo = ({server, updateTimeseries}) => {
             </h3>
             <span className="mt-1 mb-1" style={{fontSize: '0.95em'}}>
               {server.pingSuccessful ?
-                <> Players: {server.onlinePlayers}</> : (
+                <> Players: {numberWithCommas(server.onlinePlayers.toString())}</> : (
                   <span className='font-weight-light' style={{color: '#e74c3c'}}>Unable to ping</span>
                 )}
             </span>
           </div>
+        </div>
+
+        <div className='max-player-record font-weight-light pt-1' style={{color: 'rgba(255, 255, 255, 0.5)'}}>
+          Record: {numberWithCommas(server.peakPlayers.toString())} ({moment(server.peakPlayersTime).format('MM/DD/YYYY')})
         </div>
 
         <div className="timespan-selection-container">

@@ -1,13 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 
-import {parseResponse} from '../utils/api';
+import {numberWithCommas, parseResponse} from '../utils/api';
 import {ServerChart} from '../shared/chart';
 import {Select} from '../shared/select';
-
-const numberWithCommas = (num) => {
-  return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-};
 
 const Metadata = ({
                     icon,
