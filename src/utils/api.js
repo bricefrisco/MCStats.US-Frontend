@@ -7,3 +7,7 @@ export const parseResponse = (response) => {
     }
   });
 };
+
+export const numberWithCommas = (num) => {
+  return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
