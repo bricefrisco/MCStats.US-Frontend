@@ -115,9 +115,13 @@ export const Server = () => {
         width="100px"
       />
 
-      <div className='max-player-record font-weight-light pb-3' style={{color: 'rgba(255, 255, 255, 0.5)'}}>
+      <p className='max-player-record font-weight-light' style={{color: 'rgba(255, 255, 255, 0.5)'}}>
         Record: {numberWithCommas(server.peakPlayers.toString())} ({moment(server.peakPlayersTime).format('MM/DD/YYYY')})
-      </div>
+      </p>
+
+      <p className='server-description d-inline-block pt-2 pb-2 pl-1 pr-1' style={{color: 'rgba(255, 255, 255, 0.9)', backgroundColor: 'rgba(0, 0, 0, 0.1)'}}>
+        {server.description}
+      </p>
 
       <Select
         value={timespan}

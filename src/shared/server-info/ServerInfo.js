@@ -6,6 +6,7 @@ import moment from 'moment';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import './server.css';
 import {numberWithCommas} from "../../utils";
+import {OverlayTrigger, Tooltip} from "react-bootstrap";
 
 export const ServerInfo = ({server, updateTimeseries}) => {
   const [selectedTimespan, setSelectedTimespan] = useState('1h');
@@ -50,11 +51,13 @@ export const ServerInfo = ({server, updateTimeseries}) => {
     <div className="server">
       <div className="server-info">
         <div className="d-flex">
+          <OverlayTrigger placement='bottom' overlay={<Tooltip id='server-tooltip'>{server.description}</Tooltip>}>
           <img
             src={server.image}
             alt={`${server.name} favicon`}
             style={{width: '64px', height: '64px'}}
           />
+          </OverlayTrigger>
           <div className="ml-2">
             <h3
               style={{fontSize: '1.17em'}}
