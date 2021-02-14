@@ -5,9 +5,9 @@ import {Modal, Button, Form, Alert} from 'react-bootstrap';
 
 import {selectLoggedIn, refresh, selectJwt} from '../../state/authSlice';
 import {parseResponse} from '../../utils/api';
-import {Select} from '../select';
+import {Select} from '../../shared/select';
 
-export const RemoveServer = ({show, setShow}) => {
+export const RefreshServer = ({show, setShow}) => {
   const dispatch = useDispatch();
   const authenticated = useSelector(selectLoggedIn);
   const jwt = useSelector(selectJwt);
@@ -19,10 +19,10 @@ export const RemoveServer = ({show, setShow}) => {
 
   if (!authenticated) return <Redirect to="/admin"/>;
 
-  const removeServer = (jwt) => {
+  const refreshServer = (jwt) => {
     setLoading(true);
-    fetch(`${process.env.REACT_APP_BACKEND}/servers`, {
-      method: 'DELETE',
+    fetch(`${process.env.REACT_APP_BACKEND}/servers/refresh`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + jwt,
@@ -38,12 +38,12 @@ export const RemoveServer = ({show, setShow}) => {
         setSuccess(response.message);
       })
       .catch((err) => {
-        if (err === null || err === undefined) {
+        if (err == null || err === undefined) {
           setSuccess(undefined);
           setLoading(false);
           setError('Unknown error occurred');
         } else if (err.toString().includes('Token')) {
-          dispatch(refresh((jwt) => removeServer(jwt)));
+          dispatch(refresh((jwt) => refreshServer(jwt)));
         } else {
           setSuccess(undefined);
           setLoading(false);
@@ -54,13 +54,13 @@ export const RemoveServer = ({show, setShow}) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    removeServer(jwt);
+    refreshServer(jwt);
   };
 
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Remove Server</Modal.Title>
+        <Modal.Title>Refresh Server</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={onSubmit}>

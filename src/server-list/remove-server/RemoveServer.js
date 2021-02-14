@@ -5,9 +5,9 @@ import {Modal, Button, Form, Alert} from 'react-bootstrap';
 
 import {selectLoggedIn, refresh, selectJwt} from '../../state/authSlice';
 import {parseResponse} from '../../utils/api';
-import {Select} from '../select';
+import {Select} from '../../shared/select';
 
-export const RefreshServer = ({show, setShow}) => {
+export const RemoveServer = ({show, setShow}) => {
   const dispatch = useDispatch();
   const authenticated = useSelector(selectLoggedIn);
   const jwt = useSelector(selectJwt);
@@ -19,10 +19,10 @@ export const RefreshServer = ({show, setShow}) => {
 
   if (!authenticated) return <Redirect to="/admin"/>;
 
-  const refreshServer = (jwt) => {
+  const removeServer = (jwt) => {
     setLoading(true);
-    fetch(`${process.env.REACT_APP_BACKEND}/servers/refresh`, {
-      method: 'PUT',
+    fetch(`${process.env.REACT_APP_BACKEND}/servers`, {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + jwt,
@@ -38,12 +38,12 @@ export const RefreshServer = ({show, setShow}) => {
         setSuccess(response.message);
       })
       .catch((err) => {
-        if (err == null || err === undefined) {
+        if (err === null || err === undefined) {
           setSuccess(undefined);
           setLoading(false);
           setError('Unknown error occurred');
         } else if (err.toString().includes('Token')) {
-          dispatch(refresh((jwt) => refreshServer(jwt)));
+          dispatch(refresh((jwt) => removeServer(jwt)));
         } else {
           setSuccess(undefined);
           setLoading(false);
@@ -54,13 +54,13 @@ export const RefreshServer = ({show, setShow}) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    refreshServer(jwt);
+    removeServer(jwt);
   };
 
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Refresh Server</Modal.Title>
+        <Modal.Title>Remove Server</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={onSubmit}>

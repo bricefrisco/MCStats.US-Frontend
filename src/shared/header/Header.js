@@ -43,13 +43,15 @@ export const Header = () => {
           </h1>
         </div>
 
-        <a
-          href="https://github.com/bricefrisco/mcstats-us-frontend"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <FontAwesomeIcon icon={faGithub} size="2x" color="#9882ac"/>
-        </a>
+        <div className='d-flex'>
+          <a
+            href="https://github.com/bricefrisco/mcstats-us-frontend"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <FontAwesomeIcon icon={faGithub} size="2x" color="#9882ac"/>
+          </a>
+        </div>
       </div>
 
       <h2 className="mcstats-subheading">

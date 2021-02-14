@@ -10,12 +10,12 @@ import {selectLoggedIn} from '../state/authSlice';
 import {parseResponse} from '../utils/api';
 import {ServerInfo} from '../shared/server-info';
 import {Select} from '../shared/select';
-import {AddServer} from '../shared/add-server';
-import {RemoveServer} from '../shared/remove-server';
-import {RefreshServer} from '../shared/refresh-server';
+import {AddServer} from './add-server';
+import {RemoveServer} from './remove-server';
+import {RefreshServer} from './refresh-server';
 import {Loading} from '../shared/loading';
 
-import './servers.css';
+import './server-list.css';
 
 const formatTimeseries = (timeseries) => {
   return [
