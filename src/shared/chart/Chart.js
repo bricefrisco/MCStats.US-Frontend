@@ -45,6 +45,7 @@ export const ServerChart = ({
                               className,
                               style,
                               timeseries = [],
+                              updateTimeseries = true,
                             }) => {
   const [updatedTimeseries, setUpdatedTimeseries] = useState([]);
   const intervalId = useRef(null);
@@ -65,16 +66,17 @@ export const ServerChart = ({
   };
 
   useEffect(() => {
-    if (
-      updatedTimeseries.length !== 0 ||
+    if (updatedTimeseries.length !== 0 ||
       timeseries.length === 0 ||
       selectedTimespan !== '1h'
     ) {
       getTimeseries();
     }
 
-    intervalId.current = setInterval(getTimeseries, 60 * 1000);
-    return () => clearInterval(intervalId.current);
+    if (updateTimeseries) {
+      intervalId.current = setInterval(getTimeseries, 60 * 1000);
+      return () => clearInterval(intervalId.current);
+    }
   }, [serverName, selectedTimespan]);
 
   return (

@@ -5,7 +5,7 @@ import {ServerChart} from '../chart';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import './server.css';
 
-export const ServerInfo = ({server}) => {
+export const ServerInfo = ({server, updateTimeseries}) => {
   const [selectedTimespan, setSelectedTimespan] = useState('1h');
   const [chartWidth, setChartWidth] = useState('500px');
   const [chartHeight, setChartHeight] = useState('150px');
@@ -66,7 +66,10 @@ export const ServerInfo = ({server}) => {
               {server.address}
             </h3>
             <span className="mt-1 mb-1" style={{fontSize: '0.95em'}}>
-              Players: {server.onlinePlayers}
+              {server.pingSuccessful ?
+                <> Players: {server.onlinePlayers}</> : (
+                  <span className='font-weight-light' style={{color: '#e74c3c'}}>Unable to ping</span>
+                )}
             </span>
           </div>
         </div>
@@ -136,6 +139,7 @@ export const ServerInfo = ({server}) => {
         width={chartWidth}
         style={{marginTop: chartMargin}}
         timeseries={server.timeseries}
+        updateTimeseries={updateTimeseries}
       />
     </div>
   );
