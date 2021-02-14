@@ -121,3 +121,12 @@ button.close > span {
 .modal-footer {
   border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
+
+input.form-control:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 0.06rem rgba(152, 130, 172, 0.7)
+}
+
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.06rem rgba(255, 255, 255, 0.1) !important;
+}

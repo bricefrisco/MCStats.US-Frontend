@@ -6,6 +6,7 @@ import {faChartLine} from '@fortawesome/free-solid-svg-icons';
 import {faGithub} from '@fortawesome/free-brands-svg-icons';
 
 import './header.css';
+import {AddServerRequestButton} from "../add-server-request";
 
 export const Header = () => {
   const [totalServers, setTotalServers] = useState(0);
@@ -44,6 +45,7 @@ export const Header = () => {
         </div>
 
         <div className='d-flex'>
+          <AddServerRequestButton className='add-server-request-d mr-4'/>
           <a
             href="https://github.com/bricefrisco/mcstats-us-frontend"
             rel="noopener noreferrer"

@@ -1,0 +1,13 @@
+.btn-primary.add-server-request-m {
+    display: none;
+}
+
+@media (max-width: 500px) {
+    .btn-primary.add-server-request-d {
+        display: none;
+    }
+
+    .btn-primary.add-server-request-m {
+        display: inline-block;
+    }
+}
