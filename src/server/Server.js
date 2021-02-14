@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom';
 import {numberWithCommas, parseResponse} from '../utils/api';
 import {ServerChart} from '../shared/chart';
 import {Select} from '../shared/select';
+import moment from "moment";
 
 const Metadata = ({
                     icon,
@@ -113,6 +114,10 @@ export const Server = () => {
         height="100px"
         width="100px"
       />
+
+      <div className='max-player-record font-weight-light pb-3' style={{color: 'rgba(255, 255, 255, 0.5)'}}>
+        Record: {numberWithCommas(server.peakPlayers.toString())} ({moment(server.peakPlayersTime).format('MM/DD/YYYY')})
+      </div>
 
       <Select
         value={timespan}
