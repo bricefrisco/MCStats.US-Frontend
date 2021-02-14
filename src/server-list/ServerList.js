@@ -16,6 +16,7 @@ import {RefreshServer} from './refresh-server';
 import {Loading} from '../shared/loading';
 
 import './server-list.css';
+import {AddServerRequestButton} from "../shared/add-server-request";
 
 const formatTimeseries = (timeseries) => {
   return [
@@ -157,20 +158,25 @@ export const ServerList = () => {
           <Loading type="cubes"/>
         </div>
       ) : (
-        <div id="servers">
-          {servers.map((server) => (
-            <ServerInfo
-              server={{
-                name: server.name,
-                address: server.address,
-                image: server.image,
-                onlinePlayers: server.onlinePlayers,
-                timeseries: server.timeseries,
-              }}
-              key={server.name}
-            />
-          ))}
-        </div>
+        <>
+          <div id="servers">
+            {servers.map((server) => (
+              <ServerInfo
+                server={{
+                  name: server.name,
+                  address: server.address,
+                  image: server.image,
+                  onlinePlayers: server.onlinePlayers,
+                  timeseries: server.timeseries,
+                }}
+                key={server.name}
+              />
+            ))}
+          </div>
+          <div className='w-100 text-center mb-3'>
+          <AddServerRequestButton className='add-server-request-m'/>
+          </div>
+        </>
       )}
     </>
   );
