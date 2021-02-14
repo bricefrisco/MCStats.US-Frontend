@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useParams} from 'react-router-dom';
 
-import { parseResponse } from '../utils/api';
-import { ServerChart } from '../shared/chart';
-import { Select } from '../shared/select';
+import {parseResponse} from '../utils/api';
+import {ServerChart} from '../shared/chart';
+import {Select} from '../shared/select';
 
 const numberWithCommas = (num) => {
   return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 const Metadata = ({
-  icon,
-  name,
-  ip,
-  playerCount,
-  height,
-  width,
-  className,
-}) => {
+                    icon,
+                    name,
+                    ip,
+                    playerCount,
+                    height,
+                    width,
+                    className,
+                  }) => {
   return (
     <div className={className}>
-      <img src={icon} alt={`${name} server icon`} style={{ height, width }} />
+      <img src={icon} alt={`${name} server icon`} style={{height, width}}/>
       <div className="ml-3">
         <h2>{name}</h2>
-        <h5 style={{ fontWeight: '300' }}>{ip}</h5>
+        <h5 style={{fontWeight: '300'}}>{ip}</h5>
         <p>
           Players online:{' '}
           <span className="font-weight-bold">
@@ -59,7 +59,7 @@ const options = [
 ];
 
 export const Server = () => {
-  const { serverName } = useParams();
+  const {serverName} = useParams();
   const [server, setServer] = useState();
   const [error, setError] = useState();
   const [timespan, setTimespan] = useState(options[0]);
@@ -104,7 +104,7 @@ export const Server = () => {
     window.addEventListener('resize', updateSize);
   }, []);
 
-  if (server === undefined) return <div />;
+  if (server === undefined) return <div/>;
 
   return (
     <section id="server" className="pl-4 pt-5 pb-4">
@@ -130,7 +130,7 @@ export const Server = () => {
         selectedTimespan={timespan.value}
         height={chartHeight}
         width="100%"
-        style={{ marginLeft: '-30px', marginTop: '10px' }}
+        style={{marginLeft: '-30px', marginTop: '10px'}}
       />
     </section>
   );

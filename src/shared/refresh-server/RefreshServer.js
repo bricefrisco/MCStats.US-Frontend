@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import { Modal, Button, Form, Alert } from 'react-bootstrap';
+import React, {useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {Redirect} from 'react-router-dom';
+import {Modal, Button, Form, Alert} from 'react-bootstrap';
 
-import { selectLoggedIn, refresh, selectJwt } from '../../state/authSlice';
-import { parseResponse } from '../../utils/api';
-import { Select } from '../select';
+import {selectLoggedIn, refresh, selectJwt} from '../../state/authSlice';
+import {parseResponse} from '../../utils/api';
+import {Select} from '../select';
 
-export const RefreshServer = ({ show, setShow }) => {
+export const RefreshServer = ({show, setShow}) => {
   const dispatch = useDispatch();
   const authenticated = useSelector(selectLoggedIn);
   const jwt = useSelector(selectJwt);
@@ -17,7 +17,7 @@ export const RefreshServer = ({ show, setShow }) => {
 
   const [serverName, setServerName] = useState('');
 
-  if (!authenticated) return <Redirect to="/admin" />;
+  if (!authenticated) return <Redirect to="/admin"/>;
 
   const refreshServer = (jwt) => {
     setLoading(true);

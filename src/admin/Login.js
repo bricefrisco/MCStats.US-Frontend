@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import React, {useState} from 'react';
+import {Form, Button, Container, Row, Col, Alert} from 'react-bootstrap';
+import {useSelector, useDispatch} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 
 import {
   login,
@@ -20,7 +20,7 @@ export const Login = () => {
   const error = useSelector(selectError);
   const loading = useSelector(selectLoading);
 
-  if (loggedIn) return <Redirect to="/server-list" />;
+  if (loggedIn) return <Redirect to="/server-list"/>;
 
   const onSubmit = (e) => {
     e.preventDefault();

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect, useRef} from 'react';
+import {Link} from 'react-router-dom';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine } from '@fortawesome/free-solid-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faChartLine} from '@fortawesome/free-solid-svg-icons';
+import {faGithub} from '@fortawesome/free-brands-svg-icons';
 
 import './header.css';
 
@@ -35,7 +35,7 @@ export const Header = () => {
     <div className="mcstats-header">
       <div className="d-flex justify-content-between align-items-center">
         <div className="d-flex align-items-center">
-          <FontAwesomeIcon icon={faChartLine} size="3x" color="#9882ac" />
+          <FontAwesomeIcon icon={faChartLine} size="3x" color="#9882ac"/>
           <h1>
             <Link to="/server-list" className="mcstats-heading">
               MCStats
@@ -48,7 +48,7 @@ export const Header = () => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <FontAwesomeIcon icon={faGithub} size="2x" color="#9882ac" />
+          <FontAwesomeIcon icon={faGithub} size="2x" color="#9882ac"/>
         </a>
       </div>
 

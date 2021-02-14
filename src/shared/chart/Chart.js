@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
 
-import { parseResponse } from '../../utils';
+import {parseResponse} from '../../utils';
 import './chart.css';
 
 const formatTimeseries = (timeseries) => {
@@ -38,14 +38,14 @@ const fetchTimeseries = (serverName, selectedTimespan) => {
 };
 
 export const ServerChart = ({
-  serverName,
-  selectedTimespan,
-  height,
-  width,
-  className,
-  style,
-  timeseries = [],
-}) => {
+                              serverName,
+                              selectedTimespan,
+                              height,
+                              width,
+                              className,
+                              style,
+                              timeseries = [],
+                            }) => {
   const [updatedTimeseries, setUpdatedTimeseries] = useState([]);
   const intervalId = useRef(null);
   const [error, setError] = useState();
@@ -89,7 +89,7 @@ export const ServerChart = ({
   );
 };
 
-export const Chart = ({ data, height, width, style }) => {
+export const Chart = ({data, height, width, style}) => {
   const options = {
     chart: {
       type: 'area',
@@ -174,7 +174,7 @@ export const Chart = ({ data, height, width, style }) => {
 
     tooltip: {
       shared: false,
-      custom: ({ series, seriesIndex, dataPointIndex, w }) => {
+      custom: ({series, seriesIndex, dataPointIndex, w}) => {
         return `<div>Players: ${
           series[seriesIndex][dataPointIndex]
         } <br /> Date: ${moment(

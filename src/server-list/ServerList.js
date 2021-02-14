@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Redirect } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useParams, Redirect} from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import {useHistory} from 'react-router-dom';
+import {useSelector} from 'react-redux';
+import {Button} from 'react-bootstrap';
 import moment from 'moment';
 
-import { selectLoggedIn } from '../../state/authSlice';
-import { parseResponse } from '../../utils/api';
-import { ServerInfo } from '../../shared/server-info';
-import { Select } from '../../shared/select';
-import { AddServer } from '../../shared/add-server';
-import { RemoveServer } from '../../shared/remove-server';
-import { RefreshServer } from '../../shared/refresh-server';
-import { Loading } from '../../shared/loading';
+import {selectLoggedIn} from '../state/authSlice';
+import {parseResponse} from '../utils/api';
+import {ServerInfo} from '../shared/server-info';
+import {Select} from '../shared/select';
+import {AddServer} from '../shared/add-server';
+import {RemoveServer} from '../shared/remove-server';
+import {RefreshServer} from '../shared/refresh-server';
+import {Loading} from '../shared/loading';
 
 import './servers.css';
 
@@ -29,9 +29,9 @@ const formatTimeseries = (timeseries) => {
   ];
 };
 
-export const Servers = () => {
+export const ServerList = () => {
   const history = useHistory();
-  const { page } = useParams();
+  const {page} = useParams();
   const authenticated = useSelector(selectLoggedIn);
 
   const [totalPages, setTotalPages] = useState(0);
@@ -153,8 +153,8 @@ export const Servers = () => {
       </div>
 
       {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Loading type="cubes" />
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          <Loading type="cubes"/>
         </div>
       ) : (
         <div id="servers">
